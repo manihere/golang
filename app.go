@@ -27,7 +27,7 @@ func main() {
 }
 
 // Increment function increments the entered value by 1
-func Increment(x int) (result int) {
+func Increment(x int) int {
 	return x + 1
 }
 
@@ -40,18 +40,16 @@ func getPort() string {
 }
 
 func render(w http.ResponseWriter, tmpl string, pageVars PageVars) {
-
 	tmpl = fmt.Sprintf("views/%s", tmpl)
 	t, err := template.ParseFiles(tmpl)
-
-	if err != nil { // if there is an error
-		log.Print("template parsing error: ", err) // log it
+	if err != nil {
+		log.Printf("template parsing error: %v", err)
+		return
 	}
 
-	err = t.Execute(w, pageVars) //execute the template and pass in the variables to fill the gaps
-
-	if err != nil { // if there is an error
-		log.Print("template executing error: ", err) //log it
+	err = t.Execute(w, pageVars)
+	if err != nil {
+		log.Printf("template executing error: %v", err)
 	}
 }
 
